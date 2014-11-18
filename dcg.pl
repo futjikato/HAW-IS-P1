@@ -6,10 +6,14 @@ start :-
 	read_sentence(Satz),
   question(Satz, []).
 
+/**
+ * Aufbau 1
+ * Ergänzungsfrage
+ */
 question -->
   interrogativpronomen,
-  verbalphrase(Numerus, Funktion),
-  nominalphrase(Name, _, _),
+  verbalphrase(_, Funktion),
+  praepositionalphrase(Name, _, _),
 	[?],
 	{
 		write('Aufruf an: '),
@@ -19,20 +23,40 @@ question -->
 		writeln(Result)
 	}.
 
+/**
+ * Aufbau 2
+ * Entscheidungsfrage
+ */
+question -->
+	verbalphrase(Numerus, _),
+	nominalphrase(NameA, Numerus, _),
+	nominalphrase(_, Numerus, Funktion),
+	praepositionalphrase(NameB, Numerus, _),
+	[?],
+	{
+		write('Aufruf an: '),
+		writeln(Funktion),
+		call(Funktion, NameA, NameB)
+	}.
+
+
 verbalphrase(Numerus, Funktion) -->
   verb(Numerus),
 	nominalphrase(_, Numerus, Funktion).
 
-nominalphrase(_, Numerus, Funktion) -->
-  artikel(Numerus),
-  nomen(Numerus, Funktion).
+verbalphrase(Numerus, _) -->
+	verb(Numerus).
 
-nominalphrase(Name, singular, _) -->
+praepositionalphrase(Name, singular, _) -->
   praeposition,
-	name(Name).
+	nominalphrase(Name, singular, _).
 
 nominalphrase(Name, singular, _) -->
   name(Name).
+
+nominalphrase(_, Numerus, Funktion) -->
+	artikel(Numerus),
+	nomen(Numerus, Funktion).
 
 interrogativpronomen     --> [X]   , {lex(X, interrogativpronomen, _, _)}.
 praeposition						 --> [X]   , {lex(X, praeposition, _, _)}.

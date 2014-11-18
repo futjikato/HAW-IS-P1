@@ -8,7 +8,7 @@ gender(peggy,                 female).
 gender(trent,                 male  ).
 gender(trudy,                 female).
 gender(victor,                male  ).
-gender(ford,                  male  )
+gender(ford,                  male  ).
 gender(vp1_mother_bob_carola, female).
 gender(vp2_father_bob_carola, male  ).
 gender(vp1_mother_dave_ford,  female).
